@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* ─── Tier 1: primitive color tokens ──────────────────────────────
+   The raw palette straight from the design. Named by scale only —
+   never by usage — so the palette stays decoupled from intent. */
+@theme {
+  --color-grey-950: #1A1A1A;
+  --color-grey-900: #333333;
+  --color-grey-500: #737373;
+  --color-grey-200: #D9D9D9;
+  --color-grey-100: #EEEEEE;
+  --color-grey-50:  #FAFAFA;
+
+  /* primary */
+  --color-purple-950: #302267;
+  --color-purple-600: #633CFF;
+  --color-purple-300: #BEADFF;
+
+  /* secondary accent */
+  --color-blue-800: #0330D1;
+  --color-blue-500: #2D68FF;
+
+  /* error */
+  --color-red-550: #EE3939;
+  --color-red-500: #FF3939;
+
+  /* additional */
+  --color-pink-900: #8A1A50;
+  --color-pink-400: #F4A28C;
+  --color-orange-600: #EC7100;
+  --color-orange-500: #EB4925;
+}
+
+/* ─── Tier 2: semantic color tokens ───────────────────────────────
+   Role-based aliases that reference the primitives. Components
+   should use ONLY these (e.g. `text-fg-secondary`).
+   `@theme inline` emits utilities that resolve to the primitive
+   var directly, which keeps a future dark-mode override clean. */
+@theme inline {
+  --color-fg-primary:   var(--color-grey-950);
+  --color-fg-heading:   var(--color-grey-900);
+  --color-fg-secondary: var(--color-grey-500);
+}
