@@ -13,10 +13,10 @@ export default defineNuxtConfig({
     // icons (4.4 MB) to render the handful this app uses.
     //
     // The trade-off: only statically written names are found. An icon
-    // assembled at runtime must be listed in `icons` below, or it will
-    // not render — `fallbackToApi` is off, so there is no CDN to catch
-    // the miss, which keeps the app offline-capable and free of
-    // third-party requests.
+    // assembled at runtime has to be added to `clientBundle.icons` by
+    // hand or it will not render — `fallbackToApi` is off, so there is
+    // no CDN to catch the miss, which is what keeps the app
+    // offline-capable and free of third-party requests.
     clientBundle: { scan: true, icons: [] },
     serverBundle: false,
     fallbackToApi: false,

@@ -89,7 +89,12 @@ const frameClasses = computed(() =>
       <!-- Chrome is stripped here because the frame owns it: no border,
            no ring, and a transparent fill so the frame's background and
            rounded corners are the ones you see. -->
+      <!-- Forwarded attributes come FIRST so the bindings below win a
+           collision. A stray `id` would otherwise break the label's
+           `for`, and a stray `aria-describedby` would silently detach
+           the error message. -->
       <input
+        v-bind="inputAttrs"
         :id="inputId"
         v-model="value"
         :type="type"
@@ -97,7 +102,6 @@ const frameClasses = computed(() =>
         :disabled="disabled"
         :aria-invalid="error ? true : undefined"
         :aria-describedby="error ? errorId : undefined"
-        v-bind="inputAttrs"
         class="min-w-0 flex-1 border-none bg-transparent text-base text-fg-heading outline-none placeholder:text-fg-heading/50 disabled:cursor-not-allowed"
       >
 

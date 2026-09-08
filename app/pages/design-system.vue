@@ -39,7 +39,7 @@ const inputSpecimens = [
 
 const inputStates = [
   { state: 'Default', frame: '1px border in the border role', contents: 'Placeholder is fg-heading at 50%' },
-  { state: 'Focus', frame: 'Border turns brand, plus the shadow-focus glow', contents: 'Unchanged' },
+  { state: 'Focus', frame: 'Border turns brand, plus the glow-brand shadow', contents: 'Unchanged' },
   { state: 'Error', frame: 'Border turns danger; focus glow turns danger too', contents: 'Label turns danger, message sits inside the field on the right' },
   { state: 'Disabled', frame: 'Fill becomes surface-muted; border unchanged', contents: 'Label and text keep full strength — the fill carries the state, not opacity' },
 ]
