@@ -61,12 +61,28 @@
 }
 
 /* ─── Elevation ───────────────────────────────────────────────────
-   The focus glow is a brand-tinted spread with no offset, so it reads
-   as the field lighting up rather than as a drop shadow. Kept as a
-   token because inputs and any future focusable card must glow
-   identically. */
-@theme static {
-  --shadow-focus: 0 0 32px 0 color-mix(in srgb, var(--color-purple-600) 25%, transparent);
+   The focus glow is a wide spread with no offset, so it reads as the
+   field lighting up rather than as a drop shadow.
+
+   These name the PRIMITIVE rather than the `brand` / `danger` role.
+   The roles live in `@theme inline`, which resolves to the primitive
+   at the point of use and so emits no custom property of its own —
+   `var(--color-brand)` would resolve to nothing here and the
+   `color-mix()` would collapse to transparent. Hand-written CSS in
+   this file has to name the primitive the role maps to, the same way
+   the base layer below does, so keep these in step with the roles.
+
+   Written as a plain `box-shadow` rather than a `--shadow-*` theme
+   token so the colour can be mixed from the palette directly. The
+   trade-off is that neither utility layers with `ring-*` or
+   `shadow-*` on one element — last declaration wins. Nothing in the
+   design stacks them. */
+@utility glow-brand {
+  box-shadow: 0 0 32px 0 color-mix(in srgb, var(--color-purple-600) 25%, transparent);
+}
+
+@utility glow-danger {
+  box-shadow: 0 0 32px 0 color-mix(in srgb, var(--color-red-500) 25%, transparent);
 }
 
 /* ─── Base ────────────────────────────────────────────────────────

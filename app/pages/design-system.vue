@@ -29,17 +29,19 @@ const buttonStates = [
 const inputDefaults = { type: 'text', disabled: false }
 
 const inputSpecimens = [
-  { label: 'Default', props: { label: 'Email address', placeholder: 'e.g. alex@email.com', type: 'email' } },
+  // `autocomplete` is not a declared prop — it rides the attribute
+  // pass-through onto the inner input, which this specimen documents.
+  { label: 'Default', props: { label: 'Email address', placeholder: 'e.g. alex@email.com', type: 'email', autocomplete: 'email' } },
   { label: 'With icon', props: { label: 'Link', icon: 'ph:link-bold', placeholder: 'e.g. https://www.github.com/johnappleseed' } },
   { label: 'Error', props: { label: 'Email address', placeholder: 'e.g. alex@email.com', error: "Can't be empty" } },
   { label: 'Disabled', props: { label: 'Email address', placeholder: 'e.g. alex@email.com', disabled: true } },
 ]
 
 const inputStates = [
-  { state: 'Default', border: 'border', text: 'Placeholder is fg-heading at 50%' },
-  { state: 'Focus', border: 'border becomes brand, plus the focus glow', text: 'Value is fg-heading' },
-  { state: 'Error', border: 'border and label become danger', text: 'Message sits inside the field, right-aligned' },
-  { state: 'Disabled', border: 'border unchanged', text: 'Whole field drops to 50% opacity' },
+  { state: 'Default', frame: '1px border in the border role', contents: 'Placeholder is fg-heading at 50%' },
+  { state: 'Focus', frame: 'Border turns brand, plus the shadow-focus glow', contents: 'Unchanged' },
+  { state: 'Error', frame: 'Border turns danger; focus glow turns danger too', contents: 'Label turns danger, message sits inside the field on the right' },
+  { state: 'Disabled', frame: 'Border unchanged', contents: 'Label and frame together drop to 50% opacity' },
 ]
 
 const primitives = [
@@ -153,8 +155,8 @@ onMounted(() => {
           <tbody>
             <tr v-for="row in inputStates" :key="row.state" class="border-b border-grey-100 last:border-0">
               <th scope="row" class="px-4 py-3 font-semibold text-fg-heading">{{ row.state }}</th>
-              <td class="px-4 py-3 text-fg-secondary">{{ row.border }}</td>
-              <td class="px-4 py-3 text-fg-secondary">{{ row.text }}</td>
+              <td class="px-4 py-3 text-fg-secondary">{{ row.frame }}</td>
+              <td class="px-4 py-3 text-fg-secondary">{{ row.contents }}</td>
             </tr>
           </tbody>
         </table>

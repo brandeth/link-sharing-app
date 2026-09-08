@@ -1,5 +1,5 @@
 <script setup lang="ts">
-withDefaults(
+const props = withDefaults(
   defineProps<{
     /** Visible label, rendered above the field. */
     label?: string
@@ -20,15 +20,45 @@ withDefaults(
 
 const value = defineModel<string>({ default: '' })
 
+/* The root element is a wrapper, not the control, so the default
+   fallthrough would drop `name`, `autocomplete`, `required` and friends
+   onto a div where they do nothing. Attributes are split by hand
+   instead: `class` and `style` describe the field's box and stay on the
+   root, everything else is a native input attribute and is forwarded to
+   the input. */
+defineOptions({ inheritAttrs: false })
+
+const attrs = useAttrs()
+const inputAttrs = computed(() => {
+  const { class: _class, style: _style, ...rest } = attrs
+  return rest
+})
+
 /* Generated per instance so a caller never has to invent an id to pair
    the label with its control, and so two of the same field on one page
    cannot collide. */
 const inputId = useId()
 const errorId = `${inputId}-error`
+
+/* Both states keep a focus glow. Dropping it while errored would leave
+   a keyboard user with no way to tell which field they are in, exactly
+   when they most need to find it. */
+const frameClasses = computed(() =>
+  props.error
+    ? 'border-danger focus-within:glow-danger'
+    : 'border-border focus-within:border-brand focus-within:glow-brand',
+)
 </script>
 
 <template>
-  <div class="flex w-full flex-col gap-1">
+  <!-- `opacity` sits on the root so a disabled field fades as a unit.
+       On the frame alone it would leave the label at full strength,
+       reading as an enabled field with a greyed-out box. -->
+  <div
+    class="flex w-full flex-col gap-1"
+    :class="[$attrs.class, disabled && 'opacity-50']"
+    :style="$attrs.style"
+  >
     <label
       v-if="label"
       :for="inputId"
@@ -38,16 +68,16 @@ const errorId = `${inputId}-error`
       {{ label }}
     </label>
 
-    <!-- The border, padding and focus ring live on this wrapper rather than
+    <!-- The border, padding and focus ring live on this frame rather than
          on the input, so the icon sits inside the box and the whole field
          lights up together. `focus-within` is what forwards the inner
-         input's focus out to the border. -->
+         input's focus out to the border.
+
+         Both the border and the glow are transitioned; animating only the
+         shadow would leave the border colour snapping. -->
     <div
-      class="flex h-14 w-full items-center gap-4 rounded-lg border bg-surface px-4 transition-shadow"
-      :class="[
-        error ? 'border-danger' : 'border-border focus-within:border-brand focus-within:shadow-focus',
-        disabled && 'cursor-not-allowed opacity-50',
-      ]"
+      class="flex h-14 items-center gap-4 rounded-lg border bg-surface px-4 transition-[border-color,box-shadow]"
+      :class="[frameClasses, disabled && 'cursor-not-allowed']"
     >
       <Icon
         v-if="icon"
@@ -56,8 +86,8 @@ const errorId = `${inputId}-error`
         :class="error ? 'text-danger' : 'text-fg-secondary'"
       />
 
-      <!-- Chrome is stripped here because the wrapper owns it: no border,
-           no ring, and a transparent fill so the wrapper's background and
+      <!-- Chrome is stripped here because the frame owns it: no border,
+           no ring, and a transparent fill so the frame's background and
            rounded corners are the ones you see. -->
       <input
         :id="inputId"
@@ -65,8 +95,9 @@ const errorId = `${inputId}-error`
         :type="type"
         :placeholder="placeholder"
         :disabled="disabled"
-        :aria-invalid="Boolean(error) || undefined"
+        :aria-invalid="error ? true : undefined"
         :aria-describedby="error ? errorId : undefined"
+        v-bind="inputAttrs"
         class="min-w-0 flex-1 border-none bg-transparent text-base text-fg-heading outline-none placeholder:text-fg-heading/50 disabled:cursor-not-allowed"
       >
 
