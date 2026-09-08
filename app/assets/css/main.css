@@ -53,6 +53,12 @@
      name IS the utility suffix, so `--color-brand` yields bg-brand,
      text-brand and border-brand alike. */
   --color-surface:      var(--color-white);
+  /* The inert fill for a disabled control. A disabled field marks
+     itself with this rather than with opacity: fading the whole field
+     multiplies through content that is already light — the placeholder
+     is grey-900 at 50% — and drops the border to 1.08:1 against the
+     page, so the field reads as missing rather than as disabled. */
+  --color-surface-muted: var(--color-grey-50);
   --color-brand:        var(--color-purple-600);
   --color-brand-hover:  var(--color-purple-300);
   --color-brand-subtle: var(--color-purple-100);

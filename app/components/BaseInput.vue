@@ -42,7 +42,10 @@ const errorId = `${inputId}-error`
 
 /* Both states keep a focus glow. Dropping it while errored would leave
    a keyboard user with no way to tell which field they are in, exactly
-   when they most need to find it. */
+   when they most need to find it.
+
+   Disabled is carried by the frame's fill instead — see the note on
+   `surface-muted` in main.css for why it is not an opacity. */
 const frameClasses = computed(() =>
   props.error
     ? 'border-danger focus-within:glow-danger'
@@ -51,12 +54,9 @@ const frameClasses = computed(() =>
 </script>
 
 <template>
-  <!-- `opacity` sits on the root so a disabled field fades as a unit.
-       On the frame alone it would leave the label at full strength,
-       reading as an enabled field with a greyed-out box. -->
   <div
     class="flex w-full flex-col gap-1"
-    :class="[$attrs.class, disabled && 'opacity-50']"
+    :class="$attrs.class"
     :style="$attrs.style"
   >
     <label
@@ -76,8 +76,8 @@ const frameClasses = computed(() =>
          Both the border and the glow are transitioned; animating only the
          shadow would leave the border colour snapping. -->
     <div
-      class="flex h-14 items-center gap-4 rounded-lg border bg-surface px-4 transition-[border-color,box-shadow]"
-      :class="[frameClasses, disabled && 'cursor-not-allowed']"
+      class="flex h-14 items-center gap-4 rounded-lg border px-4 transition-[border-color,box-shadow]"
+      :class="[frameClasses, disabled ? 'cursor-not-allowed bg-surface-muted' : 'bg-surface']"
     >
       <Icon
         v-if="icon"

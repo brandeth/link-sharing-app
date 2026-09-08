@@ -41,7 +41,7 @@ const inputStates = [
   { state: 'Default', frame: '1px border in the border role', contents: 'Placeholder is fg-heading at 50%' },
   { state: 'Focus', frame: 'Border turns brand, plus the shadow-focus glow', contents: 'Unchanged' },
   { state: 'Error', frame: 'Border turns danger; focus glow turns danger too', contents: 'Label turns danger, message sits inside the field on the right' },
-  { state: 'Disabled', frame: 'Border unchanged', contents: 'Label and frame together drop to 50% opacity' },
+  { state: 'Disabled', frame: 'Fill becomes surface-muted; border unchanged', contents: 'Label and text keep full strength — the fill carries the state, not opacity' },
 ]
 
 const primitives = [
@@ -57,6 +57,7 @@ const primitives = [
    class, and the mapping is documented rather than read back. */
 const semanticRoles = [
   { role: 'surface', class: 'bg-surface', maps: 'white' },
+  { role: 'surface-muted', class: 'bg-surface-muted', maps: 'grey-50' },
   { role: 'brand', class: 'bg-brand', maps: 'purple-600' },
   { role: 'brand-hover', class: 'bg-brand-hover', maps: 'purple-300' },
   { role: 'brand-subtle', class: 'bg-brand-subtle', maps: 'purple-100' },
