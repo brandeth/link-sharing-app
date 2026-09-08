@@ -56,6 +56,17 @@
   --color-brand:        var(--color-purple-600);
   --color-brand-hover:  var(--color-purple-300);
   --color-brand-subtle: var(--color-purple-100);
+  --color-border:       var(--color-grey-200);
+  --color-danger:       var(--color-red-500);
+}
+
+/* ─── Elevation ───────────────────────────────────────────────────
+   The focus glow is a brand-tinted spread with no offset, so it reads
+   as the field lighting up rather than as a drop shadow. Kept as a
+   token because inputs and any future focusable card must glow
+   identically. */
+@theme static {
+  --shadow-focus: 0 0 32px 0 color-mix(in srgb, var(--color-purple-600) 25%, transparent);
 }
 
 /* ─── Base ────────────────────────────────────────────────────────

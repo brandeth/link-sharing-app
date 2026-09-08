@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BaseButton } from '#components'
+import { BaseButton, BaseInput } from '#components'
 
 useHead({ title: 'Design System' })
 
@@ -25,6 +25,23 @@ const buttonStates = [
   { state: 'Focus', primary: '2px purple outline, 2px offset', secondary: '2px purple outline, 2px offset' },
 ]
 
+/** Mirrors `withDefaults` in BaseInput, so snippets omit default props. */
+const inputDefaults = { type: 'text', disabled: false }
+
+const inputSpecimens = [
+  { label: 'Default', props: { label: 'Email address', placeholder: 'e.g. alex@email.com', type: 'email' } },
+  { label: 'With icon', props: { label: 'Link', icon: 'ph:link-bold', placeholder: 'e.g. https://www.github.com/johnappleseed' } },
+  { label: 'Error', props: { label: 'Email address', placeholder: 'e.g. alex@email.com', error: "Can't be empty" } },
+  { label: 'Disabled', props: { label: 'Email address', placeholder: 'e.g. alex@email.com', disabled: true } },
+]
+
+const inputStates = [
+  { state: 'Default', border: 'border', text: 'Placeholder is fg-heading at 50%' },
+  { state: 'Focus', border: 'border becomes brand, plus the focus glow', text: 'Value is fg-heading' },
+  { state: 'Error', border: 'border and label become danger', text: 'Message sits inside the field, right-aligned' },
+  { state: 'Disabled', border: 'border unchanged', text: 'Whole field drops to 50% opacity' },
+]
+
 const primitives = [
   ['grey-950', 'grey-900', 'grey-500', 'grey-200', 'grey-100', 'grey-50'],
   ['purple-950', 'purple-600', 'purple-300', 'purple-100'],
@@ -44,6 +61,8 @@ const semanticRoles = [
   { role: 'fg-primary', class: 'bg-fg-primary', maps: 'grey-950' },
   { role: 'fg-heading', class: 'bg-fg-heading', maps: 'grey-900' },
   { role: 'fg-secondary', class: 'bg-fg-secondary', maps: 'grey-500' },
+  { role: 'border', class: 'bg-border', maps: 'grey-200' },
+  { role: 'danger', class: 'bg-danger', maps: 'red-500' },
 ]
 
 /* Read the real values off :root rather than restating them here, so the
@@ -100,6 +119,42 @@ onMounted(() => {
               <th scope="row" class="px-4 py-3 font-semibold text-fg-heading">{{ row.state }}</th>
               <td class="px-4 py-3 text-fg-secondary">{{ row.primary }}</td>
               <td class="px-4 py-3 text-fg-secondary">{{ row.secondary }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </DsSection>
+
+    <DsSection
+      title="Input"
+      description="One 56px field that matches the button's height, with an optional label, leading icon and inline error. These specimens are live — click into one to see the focus glow, or type to see the filled state."
+    >
+      <div class="grid gap-4 lg:grid-cols-2">
+        <DsSpecimen
+          v-for="specimen in inputSpecimens"
+          :key="specimen.label"
+          :component="BaseInput"
+          name="BaseInput"
+          :label="specimen.label"
+          :component-props="specimen.props"
+          :defaults="inputDefaults"
+        />
+      </div>
+
+      <div class="overflow-x-auto rounded-lg border border-grey-100">
+        <table class="w-full text-left text-sm">
+          <thead class="border-b border-grey-100 bg-grey-50 text-fg-secondary">
+            <tr>
+              <th scope="col" class="px-4 py-3 font-semibold">State</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Frame</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Contents</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="row in inputStates" :key="row.state" class="border-b border-grey-100 last:border-0">
+              <th scope="row" class="px-4 py-3 font-semibold text-fg-heading">{{ row.state }}</th>
+              <td class="px-4 py-3 text-fg-secondary">{{ row.border }}</td>
+              <td class="px-4 py-3 text-fg-secondary">{{ row.text }}</td>
             </tr>
           </tbody>
         </table>
