@@ -4,6 +4,9 @@
    The raw palette straight from the design. Named by scale only —
    never by usage — so the palette stays decoupled from intent. */
 @theme {
+  /* Instrument Sans is resolved and self-hosted by @nuxt/fonts. */
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+
   --color-grey-950: #1A1A1A;
   --color-grey-900: #333333;
   --color-grey-500: #737373;
@@ -15,6 +18,7 @@
   --color-purple-950: #302267;
   --color-purple-600: #633CFF;
   --color-purple-300: #BEADFF;
+  --color-purple-100: #EFEBFF;
 
   /* secondary accent */
   --color-blue-800: #0330D1;
@@ -40,4 +44,12 @@
   --color-fg-primary:   var(--color-grey-950);
   --color-fg-heading:   var(--color-grey-900);
   --color-fg-secondary: var(--color-grey-500);
+
+  /* Role names carry no property prefix: in Tailwind v4 the token
+     name IS the utility suffix, so `--color-brand` yields bg-brand,
+     text-brand and border-brand alike. */
+  --color-surface:      var(--color-white);
+  --color-brand:        var(--color-purple-600);
+  --color-brand-hover:  var(--color-purple-300);
+  --color-brand-subtle: var(--color-purple-100);
 }
