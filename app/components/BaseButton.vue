@@ -33,7 +33,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   <button
     :type="type"
     :disabled="disabled"
-    class="inline-flex h-14 items-center justify-center gap-2 rounded-lg border px-6 py-4 text-base font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-25"
+    class="inline-flex h-14 cursor-pointer items-center justify-center gap-2 rounded-lg border px-6 py-4 text-base font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-25"
     :class="variantClasses[variant]"
   >
     <slot />

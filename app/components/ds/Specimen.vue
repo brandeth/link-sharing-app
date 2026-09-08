@@ -100,7 +100,7 @@ onBeforeUnmount(() => clearTimeout(resetTimer))
            design system does not actually specify. -->
       <button
         type="button"
-        class="shrink-0 rounded-md border bg-surface px-3 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        class="shrink-0 cursor-pointer rounded-md border bg-surface px-3 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
         :class="status === 'failed' ? 'border-red-500 text-red-500' : 'border-grey-200 text-fg-secondary hover:border-brand hover:text-brand'"
         @click="copy"
       >
