@@ -2,8 +2,12 @@
 
 /* ─── Tier 1: primitive color tokens ──────────────────────────────
    The raw palette straight from the design. Named by scale only —
-   never by usage — so the palette stays decoupled from intent. */
-@theme {
+   never by usage — so the palette stays decoupled from intent.
+
+   `static` emits every variable rather than only those a generated
+   utility happens to reference, so the full palette is readable at
+   runtime — the design-system page reads its swatches back from here. */
+@theme static {
   /* Instrument Sans is resolved and self-hosted by @nuxt/fonts. */
   --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
 
@@ -52,4 +56,17 @@
   --color-brand:        var(--color-purple-600);
   --color-brand-hover:  var(--color-purple-300);
   --color-brand-subtle: var(--color-purple-100);
+}
+
+/* ─── Base ────────────────────────────────────────────────────────
+   The design is light-only, so opt out of the browser's dark canvas
+   rather than inheriting it. Without this the page picks up the UA's
+   dark background while the tokens stay light, and text set in
+   `fg-heading` (#333333) all but disappears. */
+@layer base {
+  html {
+    color-scheme: light;
+    background-color: var(--color-white);
+    color: var(--color-grey-950);
+  }
 }
