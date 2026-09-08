@@ -53,14 +53,21 @@
      name IS the utility suffix, so `--color-brand` yields bg-brand,
      text-brand and border-brand alike. */
   --color-surface:       var(--color-white);
-  /* The inert fill for a disabled control. A disabled field marks
+  /* The inert fill for a disabled control. A disabled control marks
      itself with this rather than with opacity: fading the whole field
      multiplies through content that is already light — the placeholder
      is grey-900 at 50% — and drops the border to 1.08:1 against the
-     page, so the field reads as missing rather than as disabled. */
+     page, so the control reads as missing rather than as disabled. The
+     same maths sinks a faded button: at 25% its label composites to
+     1.48:1, invisible rather than inactive. Buttons and fields
+     therefore share this fill. */
   --color-surface-muted: var(--color-grey-50);
   --color-brand:         var(--color-purple-600);
   --color-brand-hover:   var(--color-purple-300);
+  /* The label colour for a control sitting on `brand-hover`. That fill is
+     light enough that white text drops to 1.98:1 on it, so the pairing
+     needs its own role rather than inheriting the resting one. */
+  --color-fg-on-brand-hover: var(--color-purple-950);
   --color-brand-subtle:  var(--color-purple-100);
   --color-border:        var(--color-grey-200);
   --color-danger:        var(--color-red-500);

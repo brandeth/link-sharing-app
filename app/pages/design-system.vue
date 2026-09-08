@@ -3,9 +3,6 @@ import { BaseButton, BaseInput } from '#components'
 
 useHead({ title: 'Design System' })
 
-/** Mirrors `withDefaults` in BaseButton, so snippets omit default props. */
-const buttonDefaults = { variant: 'primary', type: 'button', disabled: false }
-
 const buttonSpecimens = [
   { label: 'Primary', props: {}, slot: 'Save' },
   { label: 'Primary · disabled', props: { disabled: true }, slot: 'Save' },
@@ -18,15 +15,21 @@ const buttonSpecimens = [
   { label: 'Submit', props: { type: 'submit' }, slot: 'Save' },
 ]
 
+const buttonStateColumns = ['State', 'Primary', 'Secondary']
 const buttonStates = [
-  { state: 'Default', primary: 'Purple fill, white text', secondary: 'White fill, purple border and text' },
-  { state: 'Hover / active', primary: 'Fill lightens to purple-300', secondary: 'Fill becomes purple-100' },
-  { state: 'Disabled', primary: '25% opacity, no hover fill', secondary: '25% opacity, no hover fill' },
-  { state: 'Focus', primary: '2px purple outline, 2px offset', secondary: '2px purple outline, 2px offset' },
+  ['Default', 'Purple fill, white text', 'White fill, purple border and text'],
+  [
+    'Hover / active',
+    'Fill lightens to purple-300; the label darkens to purple-950 to stay legible on it',
+    'Fill becomes purple-100',
+  ],
+  [
+    'Disabled',
+    'Muted grey fill, grey label, no hover fill',
+    'Muted grey fill, grey label and border, no hover fill',
+  ],
+  ['Focus', '2px purple outline, 2px offset', '2px purple outline, 2px offset'],
 ]
-
-/** Mirrors `withDefaults` in BaseInput, so snippets omit default props. */
-const inputDefaults = { type: 'text', disabled: false }
 
 const inputSpecimens = [
   // `autocomplete` is not a declared prop — it rides the attribute
@@ -37,11 +40,20 @@ const inputSpecimens = [
   { label: 'Disabled', props: { label: 'Email address', placeholder: 'e.g. alex@email.com', disabled: true } },
 ]
 
+const inputStateColumns = ['State', 'Frame', 'Contents']
 const inputStates = [
-  { state: 'Default', frame: '1px border in the border role', contents: 'Placeholder is fg-heading at 50%' },
-  { state: 'Focus', frame: 'Border turns brand, plus the glow-brand shadow', contents: 'Unchanged' },
-  { state: 'Error', frame: 'Border turns danger; focus glow turns danger too', contents: 'Label turns danger, message sits inside the field on the right' },
-  { state: 'Disabled', frame: 'Fill becomes surface-muted; border unchanged', contents: 'Label and text keep full strength — the fill carries the state, not opacity' },
+  ['Default', '1px border in the border role', 'Placeholder is fg-heading at 50%'],
+  ['Focus', 'Border turns brand, plus the glow-brand shadow', 'Unchanged'],
+  [
+    'Error',
+    'Border turns danger; focus glow turns danger too',
+    'Label turns danger, message sits inside the field on the right',
+  ],
+  [
+    'Disabled',
+    'Fill becomes surface-muted; border unchanged',
+    'Label and text keep full strength — the fill carries the state, not opacity',
+  ],
 ]
 
 const primitives = [
@@ -103,29 +115,11 @@ onMounted(() => {
           name="BaseButton"
           :label="specimen.label"
           :component-props="specimen.props"
-          :defaults="buttonDefaults"
           :slot-text="specimen.slot"
         />
       </div>
 
-      <div class="overflow-x-auto rounded-lg border border-grey-100">
-        <table class="w-full text-left text-sm">
-          <thead class="border-b border-grey-100 bg-grey-50 text-fg-secondary">
-            <tr>
-              <th scope="col" class="px-4 py-3 font-semibold">State</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Primary</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Secondary</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in buttonStates" :key="row.state" class="border-b border-grey-100 last:border-0">
-              <th scope="row" class="px-4 py-3 font-semibold text-fg-heading">{{ row.state }}</th>
-              <td class="px-4 py-3 text-fg-secondary">{{ row.primary }}</td>
-              <td class="px-4 py-3 text-fg-secondary">{{ row.secondary }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <DsStateTable :columns="buttonStateColumns" :rows="buttonStates" />
     </DsSection>
 
     <DsSection
@@ -140,28 +134,10 @@ onMounted(() => {
           name="BaseInput"
           :label="specimen.label"
           :component-props="specimen.props"
-          :defaults="inputDefaults"
         />
       </div>
 
-      <div class="overflow-x-auto rounded-lg border border-grey-100">
-        <table class="w-full text-left text-sm">
-          <thead class="border-b border-grey-100 bg-grey-50 text-fg-secondary">
-            <tr>
-              <th scope="col" class="px-4 py-3 font-semibold">State</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Frame</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Contents</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in inputStates" :key="row.state" class="border-b border-grey-100 last:border-0">
-              <th scope="row" class="px-4 py-3 font-semibold text-fg-heading">{{ row.state }}</th>
-              <td class="px-4 py-3 text-fg-secondary">{{ row.frame }}</td>
-              <td class="px-4 py-3 text-fg-secondary">{{ row.contents }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <DsStateTable :columns="inputStateColumns" :rows="inputStates" />
     </DsSection>
 
     <DsSection

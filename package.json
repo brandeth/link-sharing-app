@@ -5,6 +5,9 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "nuxt typecheck",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -19,6 +22,10 @@
   },
   "devDependencies": {
     "@iconify-json/ph": "^1.2.2",
-    "@nuxt/fonts": "^0.14.0"
+    "@nuxt/eslint": "^1.17.0",
+    "@nuxt/fonts": "^0.14.0",
+    "eslint": "^10.10.0",
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.3.11"
   }
 }

@@ -4,7 +4,15 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/fonts', '@nuxt/icon'],
+  // Nuxt emits no `lang` of its own, so without this the document ships
+  // with none at all — screen readers fall back to the user's locale and
+  // may read English content with the wrong voice (WCAG 3.1.1, level A).
+  app: {
+    head: {
+      htmlAttrs: { lang: 'en' },
+    },
+  },
+  modules: ['@nuxt/eslint', '@nuxt/fonts', '@nuxt/icon'],
   icon: {
     // `scan` walks the source for literal icon names and inlines just
     // those from the locally installed `@iconify-json/ph`, so an icon
