@@ -70,6 +70,7 @@ const primitives = [
 const semanticRoles = [
   { role: 'surface', class: 'bg-surface', maps: 'white' },
   { role: 'surface-muted', class: 'bg-surface-muted', maps: 'grey-50' },
+  { role: 'canvas', class: 'bg-canvas', maps: 'grey-50' },
   { role: 'brand', class: 'bg-brand', maps: 'purple-600' },
   { role: 'brand-hover', class: 'bg-brand-hover', maps: 'purple-300' },
   { role: 'brand-subtle', class: 'bg-brand-subtle', maps: 'purple-100' },

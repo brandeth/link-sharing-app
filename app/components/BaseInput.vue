@@ -55,7 +55,7 @@ const frameClasses = computed(() =>
 
 <template>
   <div
-    class="flex w-full flex-col gap-1"
+    class="flex w-full flex-col gap-2"
     :class="$attrs.class"
     :style="$attrs.style"
   >

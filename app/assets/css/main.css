@@ -90,6 +90,13 @@
      name IS the utility suffix, so `--color-brand` yields bg-brand,
      text-brand and border-brand alike. */
   --color-surface:       var(--color-white);
+  /* The page itself, behind any raised surface. The login card is
+     `surface` (white) sitting on this half-step of grey, which is the
+     only thing that lets a card with no border still read as raised.
+     Shares grey-50 with `surface-muted` today but stays its own role:
+     the two answer to different intents and a dark theme would very
+     likely pull the page canvas below where it mutes a dead control. */
+  --color-canvas:        var(--color-grey-50);
   /* The inert fill for a disabled control. A disabled control marks
      itself with this rather than with opacity: fading the whole field
      multiplies through content that is already light — the placeholder
