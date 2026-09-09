@@ -80,14 +80,39 @@ const semanticRoles = [
   { role: 'danger', class: 'bg-danger', maps: 'red-500' },
 ]
 
+/* Every preset, in panel order. Preset 3's three weights each get a row;
+   the sample text is shared so the size and weight differences are what
+   read across the list. */
+const typePresets = [
+  { util: 'text-preset-1', name: 'Text Preset 1' },
+  { util: 'text-preset-3-bold', name: 'Text Preset 3 (Bold)' },
+  { util: 'text-preset-3-semibold', name: 'Text Preset 3 (SemiBold)' },
+  { util: 'text-preset-3', name: 'Text Preset 3 (Regular)' },
+  { util: 'text-preset-4', name: 'Text Preset 4' },
+]
+const typeSample = 'Share several links, one short URL'
+const weightNames: Record<string, string> = { '400': 'Regular', '600': 'SemiBold', '700': 'Bold' }
+
 /* Read the real values off :root rather than restating them here, so the
-   labels cannot drift from main.css. Primitives live in a plain `@theme`
-   block, so unlike the semantic roles they do emit custom properties. */
+   labels cannot drift from main.css. Both primitives and the type presets
+   live in `@theme static`, which emits every custom property — including
+   each preset's `--line-height` / `--font-weight` modifier — whether or
+   not a generated utility references it. The semantic roles are the
+   exception: `@theme inline` resolves them away, so those are documented
+   by hand above. */
 const hexes = ref<Record<string, string>>({})
+const typeSpecs = ref<Record<string, string>>({})
 onMounted(() => {
   const styles = getComputedStyle(document.documentElement)
   hexes.value = Object.fromEntries(
     primitives.map((token) => [token, styles.getPropertyValue(`--color-${token}`).trim()]),
+  )
+  typeSpecs.value = Object.fromEntries(
+    typePresets.map(({ util }) => {
+      const read = (suffix = '') => styles.getPropertyValue(`--${util}${suffix}`).trim()
+      const weight = read('--font-weight')
+      return [util, `${read()} · ${weightNames[weight] ?? weight} · ${read('--line-height')} line-height`]
+    }),
   )
 })
 </script>
@@ -95,8 +120,8 @@ onMounted(() => {
 <template>
   <main class="mx-auto flex max-w-5xl flex-col gap-16 px-6 py-16">
     <header class="flex flex-col gap-2">
-      <h1 class="text-4xl font-bold text-fg-heading">Design System</h1>
-      <p class="max-w-2xl text-fg-secondary">
+      <h1 class="text-preset-1 text-fg-heading">Design System</h1>
+      <p class="max-w-2xl text-preset-3 text-fg-secondary">
         Live components and colour tokens for the link sharing app. Every snippet is
         generated from the same props the specimen above it renders with, so the two
         cannot fall out of sync.
@@ -138,6 +163,25 @@ onMounted(() => {
       </div>
 
       <DsStateTable :columns="inputStateColumns" :rows="inputStates" />
+    </DsSection>
+
+    <DsSection
+      title="Type presets"
+      description="One utility per row of the Figma type panel. Each carries font size, line height and weight together, so a preset needs no companion font-* class. Values are read back from :root so they cannot drift from main.css."
+    >
+      <ul class="flex flex-col gap-3">
+        <li
+          v-for="preset in typePresets"
+          :key="preset.util"
+          class="flex flex-col gap-2 rounded-lg border border-grey-100 p-4"
+        >
+          <p :class="preset.util" class="text-fg-primary">{{ typeSample }}</p>
+          <span class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <code class="text-sm font-semibold text-fg-primary">{{ preset.util }}</code>
+            <code class="text-xs text-fg-secondary">{{ typeSpecs[preset.util] || '—' }}</code>
+          </span>
+        </li>
+      </ul>
     </DsSection>
 
     <DsSection

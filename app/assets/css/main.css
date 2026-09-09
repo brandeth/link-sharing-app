@@ -1,16 +1,53 @@
 @import "tailwindcss";
 
-/* ─── Tier 1: primitive color tokens ──────────────────────────────
-   The raw palette straight from the design. Named by scale only —
-   never by usage — so the palette stays decoupled from intent.
+/* ─── Tier 1: primitive tokens ────────────────────────────────────
+   The raw type and colour values straight from the design. Colours
+   are named by scale only — never by usage — so the palette stays
+   decoupled from intent. Type presets keep their Figma panel names.
 
    `static` emits every variable rather than only those a generated
-   utility happens to reference, so the full palette is readable at
-   runtime — the design-system page reads its swatches back from here. */
+   utility happens to reference, so the full set is readable at
+   runtime — the design-system page reads the presets and swatches
+   back from here. */
 @theme static {
-  /* Instrument Sans is resolved and self-hosted by @nuxt/fonts. */
+  /* Instrument Sans is resolved and self-hosted by @nuxt/fonts.
+     Weights 400/600/700 are declared in nuxt.config.ts — keep that
+     list in step with the weights the presets below ask for. */
   --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
 
+  /* ─── Type presets ─────────────────────────────────────────────
+     Named verbatim from the Figma type panel. Each utility carries
+     size, line-height and weight together, so `text-preset-3-semibold`
+     is complete on its own with no companion `font-*` class.
+
+     Preset 3 is one size (16px / 150%) with three weights, so it
+     gets three utilities; the unqualified `text-preset-3` is the
+     Regular, since body copy is the common case.
+
+     Line-height is 150% on every preset, kept per-preset so each
+     stays self-contained. Letter-spacing is 0 throughout (the CSS
+     initial value) and so is deliberately not encoded. */
+  --text-preset-1: 2rem;
+  --text-preset-1--line-height: 1.5;
+  --text-preset-1--font-weight: 700;
+
+  --text-preset-3-bold: 1rem;
+  --text-preset-3-bold--line-height: 1.5;
+  --text-preset-3-bold--font-weight: 700;
+
+  --text-preset-3-semibold: 1rem;
+  --text-preset-3-semibold--line-height: 1.5;
+  --text-preset-3-semibold--font-weight: 600;
+
+  --text-preset-3: 1rem;
+  --text-preset-3--line-height: 1.5;
+  --text-preset-3--font-weight: 400;
+
+  --text-preset-4: 0.75rem;
+  --text-preset-4--line-height: 1.5;
+  --text-preset-4--font-weight: 400;
+
+  /* ─── Colour palette ─────────────────────────────────────────── */
   --color-grey-950: #1A1A1A;
   --color-grey-900: #333333;
   --color-grey-500: #737373;

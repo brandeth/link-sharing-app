@@ -62,7 +62,7 @@ const frameClasses = computed(() =>
     <label
       v-if="label"
       :for="inputId"
-      class="text-xs"
+      class="text-preset-4"
       :class="error ? 'text-danger' : 'text-fg-heading'"
     >
       {{ label }}
@@ -102,7 +102,7 @@ const frameClasses = computed(() =>
         :disabled="disabled"
         :aria-invalid="error ? true : undefined"
         :aria-describedby="error ? errorId : undefined"
-        class="min-w-0 flex-1 border-none bg-transparent text-base text-fg-heading outline-none placeholder:text-fg-heading/50 disabled:cursor-not-allowed"
+        class="min-w-0 flex-1 border-none bg-transparent text-preset-3 text-fg-heading outline-none placeholder:text-fg-heading/50 disabled:cursor-not-allowed"
       >
 
       <!-- The message sits inside the box, right-aligned, per the design.
@@ -110,7 +110,7 @@ const frameClasses = computed(() =>
       <span
         v-if="error"
         :id="errorId"
-        class="shrink-0 text-xs text-danger"
+        class="shrink-0 text-preset-4 text-danger"
       >
         {{ error }}
       </span>
