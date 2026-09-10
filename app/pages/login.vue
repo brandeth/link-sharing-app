@@ -18,7 +18,7 @@ function onSubmit() {
          (the reference's outer gap), and everything inside the group —
          inputs, submit, sign-up prompt — is 24px apart. -->
     <header class="flex flex-col gap-2">
-      <h1 class="text-preset-1 text-fg-heading">Login</h1>
+      <h1 class="text-preset-2 text-fg-heading sm:text-preset-1">Login</h1>
       <p class="text-preset-3 text-fg-secondary">
         Add your details below to get back into the app
       </p>
@@ -43,9 +43,12 @@ function onSubmit() {
       />
       <BaseButton type="submit" class="w-full">Login</BaseButton>
 
+      <!-- One line on desktop; below `sm` the reference stacks it two
+           lines tall (48px), so the link becomes its own centred block
+           and "Create account" never breaks mid-phrase. -->
       <p class="text-preset-3 text-center text-fg-secondary">
         Don't have an account?
-        <NuxtLink to="/signup" class="text-brand hover:underline">Create account</NuxtLink>
+        <NuxtLink to="/signup" class="block text-brand hover:underline sm:inline">Create account</NuxtLink>
       </p>
     </form>
   </div>

@@ -86,6 +86,7 @@ const semanticRoles = [
    read across the list. */
 const typePresets = [
   { util: 'text-preset-1', name: 'Text Preset 1' },
+  { util: 'text-preset-2', name: 'Text Preset 2' },
   { util: 'text-preset-3-bold', name: 'Text Preset 3 (Bold)' },
   { util: 'text-preset-3-semibold', name: 'Text Preset 3 (SemiBold)' },
   { util: 'text-preset-3', name: 'Text Preset 3 (Regular)' },

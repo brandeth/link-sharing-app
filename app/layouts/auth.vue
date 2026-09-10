@@ -1,15 +1,21 @@
 <template>
-  <main class="flex min-h-screen flex-col items-center justify-center gap-12 bg-canvas p-8">
-    <!-- The centred shell the reference calls "Container": the logo stacked
-         48px above the card, the pair capped at the card's own 476px and
-         pinned to the middle of the viewport. `min-h-screen` (not a fixed
-         height) lets the page scroll rather than clip on a short window. -->
+  <main
+    class="flex min-h-screen flex-col items-start gap-16 bg-surface p-8 sm:items-center sm:justify-center sm:gap-12 sm:bg-canvas"
+  >
+    <!-- The shell the reference calls "Container". Two treatments:
+         · below `sm` — the mobile frame — the page is white, the logo sits
+           top-left in the 32px gutter and the form is 64px below it, with
+           the slack left at the bottom.
+         · `sm` and up, it becomes the centred card layout: grey canvas,
+           logo 48px above a 476px-capped card pinned to the viewport middle.
+         `min-h-screen` (not a fixed height) lets a short window scroll
+         rather than clip. -->
     <TheLogo />
 
-    <!-- The card. Below `sm` it drops its fill and padding so the form sits
-         straight on the canvas — the reference's mobile behaviour — leaving
-         the <main> padding as the only gutter. -->
-    <div class="w-full max-w-[476px] rounded-xl p-0 sm:bg-surface sm:p-10">
+    <!-- The card. Below `sm` it has no fill or padding, so the form sits
+         straight on the white page and the <main> padding is the only
+         gutter; at `sm` it gains the white fill and 40px pad. -->
+    <div class="w-full max-w-[476px] rounded-xl sm:bg-surface sm:p-10">
       <slot />
     </div>
   </main>

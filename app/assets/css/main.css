@@ -31,6 +31,13 @@
   --text-preset-1--line-height: 1.5;
   --text-preset-1--font-weight: 700;
 
+  /* The mobile weight of Preset 1: the login title steps down to this
+     below `sm` (see pages/login.vue). Same 700 / 150% as Preset 1, 24px
+     rather than 32px. */
+  --text-preset-2: 1.5rem;
+  --text-preset-2--line-height: 1.5;
+  --text-preset-2--font-weight: 700;
+
   --text-preset-3-bold: 1rem;
   --text-preset-3-bold--line-height: 1.5;
   --text-preset-3-bold--font-weight: 700;
