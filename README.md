@@ -51,8 +51,10 @@ at runtime, so a snippet cannot drift from the component it documents.
 Contrast is checked against WCAG 1.4.3 (4.5:1 for body text). Two pairings
 needed care and are commented where they are defined:
 
-- The primary button's hover fill is a *lighter* purple, so its label
-  switches to `fg-on-brand-hover` — white would sit at 1.98:1.
+- The primary button's hover fill is a *lighter* purple, which puts its
+  white label at 1.98:1 — below the 4.5:1 floor. Kept anyway: white
+  text on hover is spec, and the fill is transient rather than resting
+  state.
 - Disabled controls carry their state with a muted fill rather than
   opacity. Fading a control multiplies through content that is already
   light and makes it read as missing rather than as inactive.

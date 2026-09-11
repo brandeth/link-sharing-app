@@ -79,11 +79,13 @@ const frameClasses = computed(() =>
       class="flex h-14 items-center gap-4 rounded-lg border px-4 transition-[border-color,box-shadow]"
       :class="[frameClasses, disabled ? 'cursor-not-allowed bg-surface-muted' : 'bg-surface']"
     >
+      <!-- Matches the placeholder's colour (`fg-heading/50`) regardless of
+           error state — the icon is decorative chrome, not a validation
+           signal, so it never switches to `danger`. -->
       <Icon
         v-if="icon"
         :name="icon"
-        class="size-4 shrink-0"
-        :class="error ? 'text-danger' : 'text-fg-secondary'"
+        class="size-4 shrink-0 text-fg-heading/50"
       />
 
       <!-- Chrome is stripped here because the frame owns it: no border,

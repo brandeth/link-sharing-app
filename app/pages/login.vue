@@ -2,13 +2,27 @@
 useHead({ title: 'Login' })
 definePageMeta({ layout: 'auth' })
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 const email = ref('')
 const password = ref('')
+const emailError = ref('')
+const passwordError = ref('')
+
+/* Re-validating on every keystroke would flash a fresh error before the
+   user finishes fixing it; clearing on edit and only re-checking on the
+   next submit keeps the red state from fighting the fix in progress. */
+watch(email, () => { emailError.value = '' })
+watch(password, () => { passwordError.value = '' })
 
 function onSubmit() {
-  // TODO: validate the fields, surface errors through BaseInput's `error`
-  // prop, then call the auth endpoint. No backend yet; `.prevent` already
-  // stops the native form navigation.
+  emailError.value = !email.value ? 'Can\'t be empty' : !EMAIL_RE.test(email.value) ? 'Please check again' : ''
+  passwordError.value = !password.value ? 'Can\'t be empty' : ''
+
+  if (emailError.value || passwordError.value) return
+
+  // TODO: call the auth endpoint. No backend yet; `.prevent` already stops
+  // the native form navigation.
 }
 </script>
 
@@ -32,6 +46,7 @@ function onSubmit() {
         icon="ph:envelope-simple-fill"
         placeholder="e.g. alex@email.com"
         autocomplete="email"
+        :error="emailError"
       />
       <BaseInput
         v-model="password"
@@ -40,6 +55,7 @@ function onSubmit() {
         icon="ph:lock-key-fill"
         placeholder="Enter your password"
         autocomplete="current-password"
+        :error="passwordError"
       />
       <BaseButton type="submit" class="w-full">Login</BaseButton>
 

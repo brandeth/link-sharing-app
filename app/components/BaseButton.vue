@@ -23,15 +23,13 @@ withDefaults(
    suppress :hover painting on disabled form controls, but that is a
    browser quirk rather than a guarantee — other engines do paint it.
 
-   Primary swaps its label colour on hover as well as its fill. The
-   hover fill is a *lighter* purple, which leaves white text at 1.98:1
-   — below the 4.5:1 floor, and precisely while the pointer is on it.
-   `fg-on-brand-hover` is the role paired with that fill; it lands at
-   6.84:1. Secondary needs no such swap: purple-600 on purple-100 is
+   Primary keeps white label text on hover per spec, even though the
+   lighter hover fill puts it at 1.98:1 — below the 4.5:1 WCAG floor.
+   Secondary needs no such trade-off: purple-600 on purple-100 is
    already 4.97:1. */
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'border-transparent bg-brand text-white not-disabled:hover:bg-brand-hover not-disabled:hover:text-fg-on-brand-hover',
+    'border-transparent bg-brand text-white not-disabled:hover:bg-brand-hover',
   secondary:
     'border-brand bg-surface text-brand not-disabled:hover:bg-brand-subtle not-disabled:active:bg-brand-subtle',
 }
