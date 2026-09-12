@@ -113,6 +113,17 @@
      1.48:1, invisible rather than inactive. Buttons and fields
      therefore share this fill. */
   --color-surface-muted: var(--color-grey-50);
+  /* The fill a navigation tab takes while it is the current page. Grey
+     rather than `brand-subtle`: the tab's own label already carries the
+     brand colour, and tinting the fill as well makes the selected tab
+     shout over the Preview button beside it. */
+  --color-surface-selected: var(--color-grey-100);
+  /* The blocks standing in for content that has not been entered yet —
+     the avatar, name and link slots in the phone preview. Its own role
+     rather than `surface-muted`: a placeholder is waiting to be filled,
+     a muted surface is inert, and a dark theme would very likely lift
+     one while sinking the other. */
+  --color-surface-placeholder: var(--color-grey-100);
   --color-brand:         var(--color-purple-600);
   --color-brand-hover:   var(--color-purple-300);
   --color-brand-subtle:  var(--color-purple-100);

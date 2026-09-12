@@ -1,3 +1,32 @@
+<script setup lang="ts">
+type LogoSize = 'sm' | 'lg'
+
+withDefaults(
+  defineProps<{
+    /** `lg` is the auth-page lockup (40px mark); `sm` the dashboard
+        header's (32px mark). The wordmark is scaled by the same 0.8 so
+        the two read as one asset at two sizes. */
+    size?: LogoSize
+  }>(),
+  { size: 'lg' },
+)
+
+const markClasses: Record<LogoSize, string> = {
+  sm: 'size-8',
+  lg: 'size-10',
+}
+
+const wordClasses: Record<LogoSize, string> = {
+  sm: 'text-[1.8rem]',
+  lg: 'text-[2.25rem]',
+}
+
+const gapClasses: Record<LogoSize, string> = {
+  sm: 'gap-1.5',
+  lg: 'gap-2',
+}
+</script>
+
 <template>
   <!-- The devlinks brand lockup: the link-circle mark beside the wordmark.
        The mark is inlined rather than an <img> so it takes its colour from
@@ -5,9 +34,10 @@
        The wordmark is live text (Instrument Sans Bold); its size is tuned
        to the 40px mark rather than pulled from a type preset, since a logo
        is a brand asset and sits outside the type scale. -->
-  <div class="flex items-center gap-2">
+  <div class="flex items-center" :class="gapClasses[size]">
     <svg
-      class="size-10 shrink-0 text-brand"
+      class="shrink-0 text-brand"
+      :class="markClasses[size]"
       viewBox="0 0 27 27"
       fill="none"
       aria-hidden="true"
@@ -20,7 +50,10 @@
         fill="currentColor"
       />
     </svg>
-    <span class="text-[2.25rem] leading-none font-bold tracking-[-0.02em] text-fg-heading">
+    <span
+      class="leading-none font-bold tracking-[-0.02em] text-fg-heading"
+      :class="wordClasses[size]"
+    >
       devlinks
     </span>
   </div>
