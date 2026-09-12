@@ -10,6 +10,10 @@ const props = withDefaults(
     placeholder?: string
     /** Validation message. Its presence *is* the error state. */
     error?: string
+    /** Helper text under the field, e.g. a format requirement. Stays
+     *  grey in every state: it describes the rule, the error reports
+     *  the breach. */
+    hint?: string
     disabled?: boolean
   }>(),
   {
@@ -39,6 +43,15 @@ const inputAttrs = computed(() => {
    cannot collide. */
 const inputId = useId()
 const errorId = `${inputId}-error`
+const hintId = `${inputId}-hint`
+
+/* Both messages describe the control, so both are announced. The error
+   goes first: when a field is read back it is the breach the user needs,
+   the rule is context. */
+const describedBy = computed(() => {
+  const ids = [props.error && errorId, props.hint && hintId].filter(Boolean)
+  return ids.length ? ids.join(' ') : undefined
+})
 
 /* Both states keep a focus glow. Dropping it while errored would leave
    a keyboard user with no way to tell which field they are in, exactly
@@ -103,7 +116,7 @@ const frameClasses = computed(() =>
         :placeholder="placeholder"
         :disabled="disabled"
         :aria-invalid="error ? true : undefined"
-        :aria-describedby="error ? errorId : undefined"
+        :aria-describedby="describedBy"
         class="min-w-0 flex-1 border-none bg-transparent text-preset-3 text-fg-heading outline-none placeholder:text-fg-heading/50 disabled:cursor-not-allowed"
       >
 
@@ -117,5 +130,15 @@ const frameClasses = computed(() =>
         {{ error }}
       </span>
     </div>
+
+    <!-- Sits below the frame at the same 8px gap as the label above it,
+         so the field reads as label / box / hint with even spacing. -->
+    <p
+      v-if="hint"
+      :id="hintId"
+      class="text-preset-4 text-fg-secondary"
+    >
+      {{ hint }}
+    </p>
   </div>
 </template>
