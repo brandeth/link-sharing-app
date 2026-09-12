@@ -10,10 +10,16 @@
          only holding together at exactly 1024px tall. -->
     <TheHeader />
 
-    <main class="flex min-h-0 flex-1 gap-6 px-6 pb-6">
-      <!-- Desktop-only for now; below `lg` this panel is dropped and the
-           page becomes the content card alone (tablet/mobile pending). -->
-      <section class="flex w-[560px] shrink-0 items-center justify-center overflow-auto rounded-xl bg-surface p-6">
+    <!-- The gutter is 16px on mobile and 24px from `sm`. Mobile needs a
+         top pad of its own because the header sheds its gutter there. -->
+    <main class="flex min-h-0 flex-1 gap-6 p-4 sm:px-6 sm:pt-0 sm:pb-6">
+      <!-- Desktop only. The panel is a fixed 560px, so it comes back at
+           `xl` rather than `lg`: at 1024 it would leave the content card
+           392px and wrap the page title onto two lines, which neither
+           reference sanctions. Hidden with CSS rather than `v-if` — the
+           mockup is decoration, and paying ~1KB of inert markup buys a
+           resize with no layout shift and no JS. -->
+      <section class="hidden w-[560px] shrink-0 items-center justify-center overflow-auto rounded-xl bg-surface p-6 xl:flex">
         <PhonePreview />
       </section>
 
@@ -25,10 +31,11 @@
              content above it rather than with the divider. -->
         <footer class="shrink-0">
           <div class="h-px bg-border" />
-          <div class="flex justify-end px-10 py-6">
+          <div class="flex justify-end p-4 sm:px-10 sm:py-6">
             <!-- Disabled until there is something to save. Form state will
                  drive this once the link editor lands. -->
-            <BaseButton disabled>Save</BaseButton>
+            <!-- Full width on mobile, hugging its label from `sm`. -->
+            <BaseButton disabled class="w-full sm:w-auto">Save</BaseButton>
           </div>
         </footer>
       </div>

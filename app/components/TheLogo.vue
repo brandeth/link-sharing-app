@@ -1,5 +1,6 @@
 <script setup lang="ts">
 type LogoSize = 'sm' | 'lg'
+type Wordmark = 'always' | 'sm'
 
 withDefaults(
   defineProps<{
@@ -7,8 +8,12 @@ withDefaults(
         header's (32px mark). The wordmark is scaled by the same 0.8 so
         the two read as one asset at two sizes. */
     size?: LogoSize
+    /** `always` keeps the wordmark at every width. `sm` drops it below the
+        `sm` breakpoint, leaving the mark alone — the dashboard header's
+        mobile treatment, where the bar has room for icons only. */
+    wordmark?: Wordmark
   }>(),
-  { size: 'lg' },
+  { size: 'lg', wordmark: 'always' },
 )
 
 const markClasses: Record<LogoSize, string> = {
@@ -19,6 +24,11 @@ const markClasses: Record<LogoSize, string> = {
 const wordClasses: Record<LogoSize, string> = {
   sm: 'text-[1.8rem]',
   lg: 'text-[2.25rem]',
+}
+
+const wordmarkClasses: Record<Wordmark, string> = {
+  always: 'inline',
+  sm: 'hidden sm:inline',
 }
 
 const gapClasses: Record<LogoSize, string> = {
@@ -52,7 +62,7 @@ const gapClasses: Record<LogoSize, string> = {
     </svg>
     <span
       class="leading-none font-bold tracking-[-0.02em] text-fg-heading"
-      :class="wordClasses[size]"
+      :class="[wordClasses[size], wordmarkClasses[wordmark]]"
     >
       devlinks
     </span>

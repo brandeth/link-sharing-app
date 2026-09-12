@@ -104,14 +104,21 @@
      the two answer to different intents and a dark theme would very
      likely pull the page canvas below where it mutes a dead control. */
   --color-canvas:        var(--color-grey-50);
-  /* The inert fill for a disabled control. A disabled control marks
-     itself with this rather than with opacity: fading the whole field
-     multiplies through content that is already light — the placeholder
-     is grey-900 at 50% — and drops the border to 1.08:1 against the
-     page, so the control reads as missing rather than as disabled. The
-     same maths sinks a faded button: at 25% its label composites to
-     1.48:1, invisible rather than inactive. Buttons and fields
-     therefore share this fill. */
+  /* The inert fill for a disabled FIELD. A field marks itself with this
+     rather than with opacity: fading it multiplies through content that
+     is already light — the placeholder is grey-900 at 50% — and drops
+     the border to 1.08:1 against the page, so the control reads as
+     missing rather than as disabled. A field also has to stay legible
+     while inert, because its label and value are how the user reads the
+     form.
+
+     Buttons do NOT share this fill. A disabled button carries only an
+     action, so it dims its own colours instead (see BaseButton): the
+     primary goes to brand/25 under a white label. An earlier version
+     gave buttons this grey fill plus a border and the result read as an
+     ENABLED outline button, which invites the click it cannot accept.
+     The rule: inert controls that still carry information stay legible;
+     inert controls that carry only an action go dim. */
   --color-surface-muted: var(--color-grey-50);
   /* The fill a navigation tab takes while it is the current page. Grey
      rather than `brand-subtle`: the tab's own label already carries the

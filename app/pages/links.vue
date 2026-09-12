@@ -4,9 +4,9 @@ definePageMeta({ layout: 'dashboard' })
 </script>
 
 <template>
-  <div class="flex min-h-0 flex-1 flex-col gap-10 p-10">
+  <div class="flex min-h-0 flex-1 flex-col gap-10 p-6 sm:p-10">
     <header class="flex flex-col gap-2">
-      <h1 class="text-preset-1 text-fg-heading">Customize your links</h1>
+      <h1 class="text-preset-2 text-fg-heading sm:text-preset-1">Customize your links</h1>
       <p class="text-preset-3 text-fg-secondary">
         Add/edit/remove links below and then share all your profiles with the world!
       </p>
