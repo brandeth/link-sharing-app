@@ -30,12 +30,12 @@
              accessible names. The wrappers own the show/hide so neither
              `display` class has to outrank BaseButton's own. -->
         <div class="sm:hidden">
-          <BaseButton variant="secondary" size="icon" aria-label="Preview">
+          <BaseButton to="/preview" variant="secondary" size="icon" aria-label="Preview">
             <Icon name="ph:eye-bold" size="20" />
           </BaseButton>
         </div>
         <div class="hidden sm:block">
-          <BaseButton variant="secondary">Preview</BaseButton>
+          <BaseButton to="/preview" variant="secondary">Preview</BaseButton>
         </div>
       </div>
     </div>

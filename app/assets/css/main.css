@@ -81,6 +81,12 @@
   --color-pink-400: #F4A28C;
   --color-orange-600: #EC7100;
   --color-orange-500: #EB4925;
+
+  /* ─── Elevation ──────────────────────────────────────────────── */
+  /* A raised card floating over mixed ground — the profile card on the
+     preview page, which straddles the purple band and the canvas. Black
+     at 10% with no offset, so it lifts the card evenly on every side. */
+  --shadow-card: 0 0 32px 0 rgb(0 0 0 / 0.1);
 }
 
 /* ─── Tier 2: semantic color tokens ───────────────────────────────

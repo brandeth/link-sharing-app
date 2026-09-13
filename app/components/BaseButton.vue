@@ -14,14 +14,22 @@ withDefaults(
     /** Native button type. */
     type?: 'button' | 'submit' | 'reset'
     disabled?: boolean
+    /** Route to navigate to. When set the button renders as a link
+        (`NuxtLink`) wearing the same box, since a control that changes
+        page is a link to assistive tech. `type` and `disabled` do not
+        apply to a link and are dropped. */
+    to?: string
   }>(),
   {
     variant: 'primary',
     size: 'md',
     type: 'button',
     disabled: false,
+    to: undefined,
   },
 )
+
+const NuxtLink = resolveComponent('NuxtLink')
 
 /* Every variant carries a 1px border so the box metrics stay identical
    and only the border colour changes between them.
@@ -70,12 +78,14 @@ const variantClasses: Record<ButtonVariant, string> = {
 </script>
 
 <template>
-  <button
-    :type="type"
-    :disabled="disabled"
+  <component
+    :is="to ? NuxtLink : 'button'"
+    :to="to"
+    :type="to ? undefined : type"
+    :disabled="to ? undefined : disabled"
     class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border text-preset-3-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:cursor-not-allowed"
     :class="[variantClasses[variant], sizeClasses[size]]"
   >
     <slot />
-  </button>
+  </component>
 </template>
