@@ -25,7 +25,14 @@ export default defineNuxtConfig({
     // hand or it will not render — `fallbackToApi` is off, so there is
     // no CDN to catch the miss, which is what keeps the app
     // offline-capable and free of third-party requests.
-    clientBundle: { scan: true, icons: [] },
+    //
+    // `.ts` is added to the default globs because the platform icons
+    // are data in `app/utils/platforms.ts`, and the scanner otherwise
+    // reads only markup-ish files (vue/jsx/tsx/md/yml).
+    clientBundle: {
+      scan: { globInclude: ['**/*.{vue,jsx,tsx,ts,md,mdc,mdx,yml,yaml}'] },
+      icons: [],
+    },
     serverBundle: false,
     fallbackToApi: false,
   },

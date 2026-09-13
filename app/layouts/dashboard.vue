@@ -4,10 +4,12 @@
          and the content card the routed page fills. Both tabs share all
          three, so they live here rather than in either page.
 
-         `min-h-screen` with `min-h-0` on the row is what replaces the
-         reference's fixed 1024/888/864px stack: the card grows to the
-         viewport and the list inside it scrolls, instead of the design
-         only holding together at exactly 1024px tall. -->
+         `min-h-screen` with `flex-1` down the chain is what replaces the
+         reference's fixed 1024/888/864px stack: the card fills at least
+         the viewport, and grows past it only when fixed content (the
+         phone, the empty state) needs the room — never to fit the links
+         list, which scrolls instead. The list opts out of sizing its
+         ancestors with `contain: size`; see pages/links.vue. -->
     <TheHeader />
 
     <!-- The gutter is 16px on mobile and 24px from `sm`. Mobile needs a

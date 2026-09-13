@@ -1,3 +1,16 @@
+<script setup lang="ts">
+const { links } = useLinks()
+
+/* The mockup always shows five link rows: the user's links first, then
+   grey placeholders for the rest. */
+const SLOTS = 5
+const placeholders = computed(() => Math.max(0, SLOTS - links.value.length))
+
+const previewLinks = computed(() =>
+  links.value.map(link => ({ id: link.id, platform: getPlatform(link.platform) })),
+)
+</script>
+
 <template>
   <!-- The phone mockup, drawn in markup rather than shipped as an image
        asset: it is two stroked rounded rects and a notch, so an inline
@@ -5,10 +18,9 @@
        token rather than a baked-in hex.
 
        The frame is fixed at its design size (307 x 631) and the content
-       is positioned against it, so the two can never drift apart. The
-       whole thing is decorative — it is a skeleton of content the user
-       has not entered yet, with nothing for a screen reader to read —
-       hence `aria-hidden`. -->
+       is positioned against it, so the two can never drift apart. It is
+       `aria-hidden` because it only mirrors the editor beside it: every
+       link it shows is already announced there as a form field. -->
   <div class="relative h-[631px] w-[307px] shrink-0" aria-hidden="true">
     <svg
       class="absolute inset-0 text-fg-secondary"
@@ -47,11 +59,35 @@
         </div>
       </div>
 
-      <div class="flex flex-col gap-5">
+      <!-- Fixed at the height of five rows (5 x 44 + 4 x 20). Past five
+           links the rows scroll inside the screen instead of running off
+           the bottom of the phone. The scrollbar is hidden: at 237px it
+           would visibly narrow the rows, and a wheel still scrolls it. -->
+      <div class="flex h-[300px] flex-col gap-5 overflow-y-auto [scrollbar-width:none]">
+        <!-- Each row takes its platform's brand fill. A light fill (only
+             Frontend Mentor) gets a border and dark text, or it would be
+             a white label on a white screen. -->
         <div
-          v-for="slot in 5"
-          :key="slot"
-          class="h-11 rounded-lg bg-surface-placeholder"
+          v-for="{ id, platform } in previewLinks"
+          :key="id"
+          class="flex h-11 shrink-0 items-center gap-2 rounded-lg px-4 text-preset-4"
+          :class="platform.light ? 'border border-border text-fg-heading' : 'text-white'"
+          :style="{ backgroundColor: platform.color }"
+        >
+          <Icon :name="platform.icon" size="16" class="shrink-0" />
+          <span class="min-w-0 flex-1 truncate">{{ platform.label }}</span>
+          <Icon
+            name="mdi:arrow-right"
+            size="16"
+            class="shrink-0"
+            :class="{ 'text-fg-secondary': platform.light }"
+          />
+        </div>
+
+        <div
+          v-for="slot in placeholders"
+          :key="`placeholder-${slot}`"
+          class="h-11 shrink-0 rounded-lg bg-surface-placeholder"
         />
       </div>
     </div>
