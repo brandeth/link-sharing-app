@@ -15,8 +15,9 @@ const platformOptions = PLATFORMS.map(({ id, label, icon }) => ({ value: id, lab
 
 <template>
   <!-- `canvas` on the white content card, the same well treatment the
-       empty state uses: 24px padding, 16px between header and fields. -->
-  <div class="flex flex-col gap-4 rounded-xl bg-canvas p-6">
+       empty state uses, 16px between header and fields. Padded 16px,
+       tighter than the export's 24px. -->
+  <div class="flex flex-col gap-4 rounded-xl bg-canvas p-4">
     <div class="flex items-center justify-between gap-4">
       <h2 class="flex items-center gap-2 text-preset-3-bold text-fg-secondary">
         <!-- The drag handle: two 12px rules, 4px apart. Drawn only for

@@ -55,7 +55,7 @@ function onRemove(id: string) {
            towards the height of the page. Without it, every card added
            grows the shell and the page scrolls Save out of view; with it,
            the list takes whatever room the card has left and scrolls.
-           The intrinsic height is one card (268px), so a short window
+           The intrinsic height is one card (252px), so a short window
            grows the page enough to show at least one link rather than
            crushing the list to nothing.
 
@@ -65,7 +65,7 @@ function onRemove(id: string) {
       <ol
         v-else
         ref="list"
-        class="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto contain-size [contain-intrinsic-height:268px]"
+        class="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto contain-size [contain-intrinsic-height:252px]"
       >
         <li v-for="(link, index) in links" :key="link.id">
           <LinkCard
