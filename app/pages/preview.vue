@@ -1,5 +1,6 @@
 <script setup lang="ts">
 useHead({ title: 'Preview' })
+definePageMeta({ middleware: 'auth' })
 
 const { links } = useLinks()
 const { profile, fullName } = useProfile()
@@ -8,19 +9,17 @@ const previewLinks = computed(() =>
   links.value.map(link => ({ ...link, platform: getPlatform(link.platform) })),
 )
 
-/* Copies the page's address for now. There is no public profile route
-   yet; when there is, this is the one line to point at it. The status
-   text is announced to screen readers — the visible toast comes with
-   its own design pass. */
-const status = ref('')
+const { show: showToast } = useToast()
 
+/* Copies the page's address for now. There is no public profile route
+   yet; when there is, this is the one line to point at it. */
 async function onShare() {
   try {
     await navigator.clipboard.writeText(window.location.href)
-    status.value = 'The link has been copied to your clipboard!'
+    showToast('The link has been copied to your clipboard!', 'ph:link-bold')
   }
   catch {
-    status.value = 'Could not copy the link.'
+    showToast('Could not copy the link.', 'ph:warning-circle-bold')
   }
 }
 </script>
@@ -53,7 +52,6 @@ async function onShare() {
           Share Link
         </BaseButton>
       </nav>
-      <p class="sr-only" role="status">{{ status }}</p>
     </header>
 
     <!-- In flow rather than absolutely centred as in the export: at
@@ -62,7 +60,7 @@ async function onShare() {
          instead of pushing the card up under the header. Height is the
          content's own, so more links grow the card rather than
          overflowing the reference's 576px. -->
-    <main class="relative flex justify-center px-6 pt-15 pb-6 sm:pt-22">
+    <main class="relative flex justify-center px-6 pt-[34px] pb-6 sm:pt-22">
       <article class="flex w-[237px] flex-col gap-14 rounded-3xl sm:w-[349px] sm:bg-surface sm:px-14 sm:py-12 sm:shadow-card">
         <div class="flex flex-col items-center gap-6">
           <div class="size-26 shrink-0 overflow-hidden rounded-full border-4 border-brand bg-surface-placeholder">

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 useHead({ title: 'Links' })
-definePageMeta({ layout: 'dashboard' })
+definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 
-const { links, add, remove } = useLinks()
+const { links, errors, add, remove, clearError } = useLinks()
 
 const list = ref<HTMLOListElement>()
 const addButton = ref<{ $el: HTMLButtonElement }>()
@@ -72,6 +72,9 @@ function onRemove(id: string) {
             v-model:platform="link.platform"
             v-model:url="link.url"
             :number="index + 1"
+            :error="errors[link.id]"
+            @update:platform="clearError(link.id)"
+            @update:url="clearError(link.id)"
             @remove="onRemove(link.id)"
           />
         </li>

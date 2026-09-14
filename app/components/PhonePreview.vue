@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { links } = useLinks()
+const { profile, fullName } = useProfile()
 
 /* The mockup always shows five link rows: the user's links first, then
    grey placeholders for the rest. */
@@ -51,11 +52,26 @@ const previewLinks = computed(() =>
     <!-- Inset from the frame by the reference's own offsets: 34.5px from
          the left edge, 63.5px from the top. -->
     <div class="absolute top-[63.5px] left-[34.5px] flex w-[237px] flex-col gap-14">
+      <!-- Each profile line is text once filled in and a skeleton pill
+           until then. Every line keeps a fixed height either way, so the
+           link rows below never move as the user types. -->
       <div class="flex flex-col items-center gap-[25px]">
-        <div class="size-24 rounded-full bg-surface-placeholder" />
-        <div class="flex flex-col items-center gap-[13px]">
-          <div class="h-4 w-40 rounded-full bg-surface-placeholder" />
-          <div class="h-2 w-[72px] rounded-full bg-surface-placeholder" />
+        <div
+          class="size-24 overflow-hidden rounded-full bg-surface-placeholder"
+          :class="{ 'border-4 border-brand': profile.avatar }"
+        >
+          <img v-if="profile.avatar" :src="profile.avatar" alt="" class="size-full object-cover">
+        </div>
+        <div class="flex w-full flex-col items-center gap-[13px]">
+          <p v-if="fullName" class="-my-1 h-6 w-full truncate text-center text-preset-3-semibold text-fg-heading">
+            {{ fullName }}
+          </p>
+          <div v-else class="h-4 w-40 rounded-full bg-surface-placeholder" />
+
+          <p v-if="profile.email" class="-my-[5px] h-[18px] w-full truncate text-center text-preset-4 text-fg-secondary">
+            {{ profile.email }}
+          </p>
+          <div v-else class="h-2 w-[72px] rounded-full bg-surface-placeholder" />
         </div>
       </div>
 

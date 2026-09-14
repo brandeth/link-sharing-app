@@ -3,6 +3,9 @@ const props = withDefaults(
   defineProps<{
     /** Visible label, rendered above the field. */
     label?: string
+    /** Where the label sits. `side` is the profile form's row: a 240px
+     *  grey label beside the field from `sm`, stacked above it below. */
+    labelPosition?: 'top' | 'side'
     /** Iconify name for the leading icon, e.g. `ph:link-bold`. */
     icon?: string
     /** Native input type. */
@@ -18,6 +21,7 @@ const props = withDefaults(
   }>(),
   {
     type: 'text',
+    labelPosition: 'top',
     disabled: false,
   },
 )
@@ -53,92 +57,122 @@ const describedBy = computed(() => {
   return ids.length ? ids.join(' ') : undefined
 })
 
-/* Both states keep a focus glow. Dropping it while errored would leave
-   a keyboard user with no way to tell which field they are in, exactly
-   when they most need to find it.
+/* Only the default state glows on focus. The error state keeps its
+   plain red border, per the design — the glow would otherwise appear
+   the moment Save focuses the first invalid field.
 
    Disabled is carried by the frame's fill instead — see the note on
    `surface-muted` in main.css for why it is not an opacity. */
 const frameClasses = computed(() =>
   props.error
-    ? 'border-danger focus-within:glow-danger'
+    ? 'border-danger'
     : 'border-border focus-within:border-brand focus-within:glow-brand',
 )
 </script>
 
 <template>
+  <!-- A `side` label keeps its 240px column only from `sm`; below it
+       there is no room beside the field, so it stacks 4px above it with
+       the mobile form's smaller type. -->
   <div
-    class="flex w-full flex-col gap-2"
-    :class="$attrs.class"
+    class="flex w-full flex-col"
+    :class="[
+      labelPosition === 'side' ? 'gap-1 sm:flex-row sm:items-center sm:gap-4' : 'gap-2',
+      $attrs.class,
+    ]"
     :style="$attrs.style"
   >
     <label
       v-if="label"
       :for="inputId"
-      class="text-preset-4"
-      :class="error ? 'text-danger' : 'text-fg-heading'"
+      :class="[
+        labelPosition === 'side' ? 'text-preset-4 sm:w-60 sm:shrink-0 sm:text-preset-3' : 'text-preset-4',
+        error ? 'text-danger' : labelPosition === 'side' ? 'text-fg-secondary' : 'text-fg-heading',
+      ]"
     >
       {{ label }}
     </label>
 
-    <!-- The border, padding and focus ring live on this frame rather than
-         on the input, so the icon sits inside the box and the whole field
-         lights up together. `focus-within` is what forwards the inner
-         input's focus out to the border.
+    <!-- Frame and hint are grouped so a `side` row lays out as label |
+         field, with the hint still hanging under the field. -->
+    <div class="flex min-w-0 flex-1 flex-col gap-2">
+      <!-- The border, padding and focus ring live on this frame rather than
+           on the input, so the icon sits inside the box and the whole field
+           lights up together. `focus-within` is what forwards the inner
+           input's focus out to the border.
 
-         Both the border and the glow are transitioned; animating only the
-         shadow would leave the border colour snapping. -->
-    <div
-      class="flex h-14 items-center gap-4 rounded-lg border px-4 transition-[border-color,box-shadow]"
-      :class="[frameClasses, disabled ? 'cursor-not-allowed bg-surface-muted' : 'bg-surface']"
-    >
-      <!-- Matches the placeholder's colour (`fg-heading/50`) regardless of
-           error state — the icon is decorative chrome, not a validation
-           signal, so it never switches to `danger`. -->
-      <Icon
-        v-if="icon"
-        :name="icon"
-        class="size-4 shrink-0 text-fg-heading/50"
-      />
-
-      <!-- Chrome is stripped here because the frame owns it: no border,
-           no ring, and a transparent fill so the frame's background and
-           rounded corners are the ones you see. -->
-      <!-- Forwarded attributes come FIRST so the bindings below win a
-           collision. A stray `id` would otherwise break the label's
-           `for`, and a stray `aria-describedby` would silently detach
-           the error message. -->
-      <input
-        v-bind="inputAttrs"
-        :id="inputId"
-        v-model="value"
-        :type="type"
-        :placeholder="placeholder"
-        :disabled="disabled"
-        :aria-invalid="error ? true : undefined"
-        :aria-describedby="describedBy"
-        class="min-w-0 flex-1 border-none bg-transparent text-preset-3 text-fg-heading outline-none placeholder:text-fg-heading/50 disabled:cursor-not-allowed"
+           Both the border and the glow are transitioned; animating only the
+           shadow would leave the border colour snapping. -->
+      <div
+        class="flex h-14 items-center gap-4 rounded-lg border px-4 transition-[border-color,box-shadow]"
+        :class="[frameClasses, disabled ? 'cursor-not-allowed bg-surface-muted' : 'bg-surface']"
       >
+        <!-- Matches the placeholder's colour (`fg-heading/50`) regardless of
+             error state — the icon is decorative chrome, not a validation
+             signal, so it never switches to `danger`. -->
+        <Icon
+          v-if="icon"
+          :name="icon"
+          class="size-4 shrink-0 text-fg-heading/50"
+        />
 
-      <!-- The message sits inside the box, right-aligned, per the design.
-           `shrink-0` keeps it whole and lets the input give up width. -->
-      <span
-        v-if="error"
-        :id="errorId"
-        class="shrink-0 text-preset-4 text-danger"
+        <!-- Chrome is stripped here because the frame owns it: no border,
+             no ring, and a transparent fill so the frame's background and
+             rounded corners are the ones you see. -->
+        <!-- Forwarded attributes come FIRST so the bindings below win a
+             collision. A stray `id` would otherwise break the label's
+             `for`, and a stray `aria-describedby` would silently detach
+             the error message. -->
+        <input
+          v-bind="inputAttrs"
+          :id="inputId"
+          v-model="value"
+          :type="type"
+          :placeholder="placeholder"
+          :disabled="disabled"
+          :aria-invalid="error ? true : undefined"
+          :aria-describedby="describedBy"
+          class="min-w-0 flex-1 border-none bg-transparent text-preset-3 text-fg-heading outline-none placeholder:text-fg-heading/50 disabled:cursor-not-allowed"
+        >
+
+        <!-- The message sits inside the box, right-aligned, per the design.
+             `shrink-0` keeps it whole and lets the input give up width.
+
+             A `side` field moves it out of the box below `sm` (see the copy
+             under the frame): on a phone the box is too narrow to hold a
+             placeholder and "Can't be empty" side by side. This span keeps
+             the id either way — `aria-describedby` still reads a hidden
+             element's text, so the message is announced once, whichever
+             copy is on screen. -->
+        <span
+          v-if="error"
+          :id="errorId"
+          class="shrink-0 text-preset-4 text-danger"
+          :class="{ 'hidden sm:inline': labelPosition === 'side' }"
+        >
+          {{ error }}
+        </span>
+      </div>
+
+      <!-- The mobile copy of a `side` field's message, under the box.
+           `aria-hidden` because the span above already describes the input. -->
+      <p
+        v-if="error && labelPosition === 'side'"
+        class="text-preset-4 text-danger sm:hidden"
+        aria-hidden="true"
       >
         {{ error }}
-      </span>
-    </div>
+      </p>
 
-    <!-- Sits below the frame at the same 8px gap as the label above it,
-         so the field reads as label / box / hint with even spacing. -->
-    <p
-      v-if="hint"
-      :id="hintId"
-      class="text-preset-4 text-fg-secondary"
-    >
-      {{ hint }}
-    </p>
+      <!-- Sits below the frame at the same 8px gap as the label above it,
+           so the field reads as label / box / hint with even spacing. -->
+      <p
+        v-if="hint"
+        :id="hintId"
+        class="text-preset-4 text-fg-secondary"
+      >
+        {{ hint }}
+      </p>
+    </div>
   </div>
 </template>

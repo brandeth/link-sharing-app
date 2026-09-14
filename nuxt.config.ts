@@ -12,6 +12,27 @@ export default defineNuxtConfig({
       htmlAttrs: { lang: 'en' },
     },
   },
+  runtimeConfig: {
+    public: {
+      // Which storage and auth backend the app talks to: `memory` for
+      // local development, `supabase` in production. Override with
+      // NUXT_PUBLIC_BACKEND. See app/backend/.
+      backend: 'memory',
+    },
+  },
+  // Pages that need the signed-in user render in the browser only. Both
+  // backends keep the session client-side (sessionStorage for memory,
+  // localStorage for supabase-js), so the server cannot tell who is
+  // asking: it would render a logged-out page for the client to throw
+  // away. The auth pages are included so the redirect of an
+  // already-signed-in user happens before anything is painted.
+  routeRules: {
+    '/links': { ssr: false },
+    '/profile-details': { ssr: false },
+    '/preview': { ssr: false },
+    '/login': { ssr: false },
+    '/signup': { ssr: false },
+  },
   modules: ['@nuxt/eslint', '@nuxt/fonts', '@nuxt/icon'],
   icon: {
     // `scan` walks the source for literal icon names and inlines just

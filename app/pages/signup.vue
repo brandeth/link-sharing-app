@@ -1,9 +1,15 @@
 <script setup lang="ts">
-useHead({ title: 'Create account' })
-definePageMeta({ layout: 'auth' })
+import { BackendError } from '~/backend'
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+useHead({ title: 'Create account' })
+definePageMeta({ layout: 'auth', middleware: 'guest' })
+
 const MIN_PASSWORD_LENGTH = 8
+
+const { signUp } = useSession()
+const { show: showToast } = useToast()
+
+const submitting = ref(false)
 
 const email = ref('')
 const password = ref('')
@@ -20,15 +26,30 @@ watch(email, () => { emailError.value = '' })
 watch(password, () => { passwordError.value = ''; confirmPasswordError.value = '' })
 watch(confirmPassword, () => { confirmPasswordError.value = '' })
 
-function onSubmit() {
+async function onSubmit() {
   emailError.value = !email.value ? 'Can\'t be empty' : !EMAIL_RE.test(email.value) ? 'Please check again' : ''
   passwordError.value = !password.value ? 'Can\'t be empty' : password.value.length < MIN_PASSWORD_LENGTH ? 'Please check again' : ''
   confirmPasswordError.value = !confirmPassword.value ? 'Can\'t be empty' : confirmPassword.value !== password.value ? 'Please check again' : ''
 
   if (emailError.value || passwordError.value || confirmPasswordError.value) return
 
-  // TODO: call the auth endpoint. No backend yet; `.prevent` already stops
-  // the native form navigation.
+  submitting.value = true
+  try {
+    await signUp(email.value, password.value)
+    await navigateTo('/links')
+  }
+  catch (error) {
+    if (error instanceof BackendError && error.code === 'email-taken') {
+      emailError.value = 'Already registered'
+    }
+    else {
+      console.error(error)
+      showToast('Something went wrong. Please try again.', 'ph:warning-circle-bold')
+    }
+  }
+  finally {
+    submitting.value = false
+  }
 }
 </script>
 
@@ -74,7 +95,7 @@ function onSubmit() {
         hint="Password must contain at least 8 characters"
         :error="confirmPasswordError"
       />
-      <BaseButton type="submit" class="w-full">Create new account</BaseButton>
+      <BaseButton type="submit" class="w-full" :disabled="submitting">Create new account</BaseButton>
 
       <!-- One line on desktop; below `sm` the mobile frame stacks it two
            lines tall, with "Login" on its own centred line — the same

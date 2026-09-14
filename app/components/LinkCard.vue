@@ -3,6 +3,8 @@ defineProps<{
   /** 1-based position in the list. Links renumber when one is removed,
       so this is passed in rather than stored on the link. */
   number: number
+  /** Validation message for the URL, set when a save fails. */
+  error?: string
 }>()
 
 const emit = defineEmits<{ remove: [] }>()
@@ -50,6 +52,7 @@ const platformOptions = PLATFORMS.map(({ id, label, icon }) => ({ value: id, lab
       icon="ph:link-bold"
       placeholder="e.g. https://www.github.com/johnappleseed"
       autocomplete="url"
+      :error="error"
     />
   </div>
 </template>

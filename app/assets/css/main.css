@@ -137,7 +137,12 @@
      a muted surface is inert, and a dark theme would very likely lift
      one while sinking the other. */
   --color-surface-placeholder: var(--color-grey-100);
-  --color-brand:         var(--color-purple-600);
+  /* A dark surface over the light page, and the text that sits on it —
+     the toast. Named for the inversion rather than the grey, so a dark
+     theme can flip the pair without the toast disappearing into it. */
+  --color-surface-inverse: var(--color-grey-900);
+  --color-fg-inverse:    var(--color-grey-50);
+  --color-brand:        var(--color-purple-600);
   --color-brand-hover:   var(--color-purple-300);
   --color-brand-subtle:  var(--color-purple-100);
   --color-border:        var(--color-grey-200);
@@ -148,7 +153,7 @@
    The focus glow is a wide spread with no offset, so it reads as the
    field lighting up rather than as a drop shadow.
 
-   These name the PRIMITIVE rather than the `brand` / `danger` role.
+   It names the PRIMITIVE rather than the `brand` role.
    The roles live in `@theme inline`, which resolves to the primitive
    at the point of use and so emits no custom property of its own —
    `var(--color-brand)` would resolve to nothing here and the
@@ -158,15 +163,11 @@
 
    Written as a plain `box-shadow` rather than a `--shadow-*` theme
    token so the colour can be mixed from the palette directly. The
-   trade-off is that neither utility layers with `ring-*` or
+   trade-off is that the utility does not layer with `ring-*` or
    `shadow-*` on one element — last declaration wins. Nothing in the
    design stacks them. */
 @utility glow-brand {
   box-shadow: 0 0 32px 0 color-mix(in srgb, var(--color-purple-600) 25%, transparent);
-}
-
-@utility glow-danger {
-  box-shadow: 0 0 32px 0 color-mix(in srgb, var(--color-red-500) 25%, transparent);
 }
 
 /* ─── Base ────────────────────────────────────────────────────────
