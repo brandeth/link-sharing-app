@@ -32,8 +32,12 @@ export function useSession() {
     await start(await backend.signIn(email, password))
   }
 
+  /* Resolves to whether the new account is signed in. It is not when
+     the backend wants the email confirmed first. */
   async function signUp(email: string, password: string) {
-    await start(await backend.signUp(email, password))
+    const created = await backend.signUp(email, password)
+    if (created) await start(created)
+    return created !== null
   }
 
   /* Edits to either form that have not been saved, which signing out

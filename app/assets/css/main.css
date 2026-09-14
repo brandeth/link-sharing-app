@@ -142,7 +142,7 @@
      theme can flip the pair without the toast disappearing into it. */
   --color-surface-inverse: var(--color-grey-900);
   --color-fg-inverse:    var(--color-grey-50);
-  --color-brand:        var(--color-purple-600);
+  --color-brand:         var(--color-purple-600);
   --color-brand-hover:   var(--color-purple-300);
   --color-brand-subtle:  var(--color-purple-100);
   --color-border:        var(--color-grey-200);
@@ -176,6 +176,12 @@
    dark background while the tokens stay light, and text set in
    `fg-heading` (#333333) all but disappears. */
 @layer base {
+  /* Edge draws its own reveal button inside password fields, which would
+     sit beside BaseInput's toggle as a second eye. */
+  input::-ms-reveal {
+    display: none;
+  }
+
   html {
     color-scheme: light;
     background-color: var(--color-white);

@@ -18,11 +18,15 @@ const props = withDefaults(
      *  the breach. */
     hint?: string
     disabled?: boolean
+    /** Adds a show/hide toggle to a `password` field. Ignored for other
+     *  types. */
+    revealable?: boolean
   }>(),
   {
     type: 'text',
     labelPosition: 'top',
     disabled: false,
+    revealable: true,
   },
 )
 
@@ -46,6 +50,7 @@ const inputAttrs = computed(() => {
    the label with its control, and so two of the same field on one page
    cannot collide. */
 const inputId = useId()
+const input = ref<HTMLInputElement>()
 const errorId = `${inputId}-error`
 const hintId = `${inputId}-hint`
 
@@ -56,6 +61,23 @@ const describedBy = computed(() => {
   const ids = [props.error && errorId, props.hint && hintId].filter(Boolean)
   return ids.length ? ids.join(' ') : undefined
 })
+
+/* Show/hide for password fields. Only the rendered `type` changes; the
+   prop, and so what the caller asked for, stays `password`. */
+const canReveal = computed(() => props.type === 'password' && props.revealable)
+const revealed = ref(false)
+const inputType = computed(() => (canReveal.value && revealed.value ? 'text' : props.type))
+
+/* Hidden again whenever the form is submitted, so a password is not
+   left on screen under an error, and the browser's "save password"
+   prompt still finds a password field. Listened for on the form itself
+   because the submit handler belongs to the page, not to this field. */
+function hide() {
+  revealed.value = false
+}
+
+onMounted(() => input.value?.form?.addEventListener('submit', hide, true))
+onBeforeUnmount(() => input.value?.form?.removeEventListener('submit', hide, true))
 
 /* Only the default state glows on focus. The error state keeps its
    plain red border, per the design — the glow would otherwise appear
@@ -126,8 +148,9 @@ const frameClasses = computed(() =>
         <input
           v-bind="inputAttrs"
           :id="inputId"
+          ref="input"
           v-model="value"
-          :type="type"
+          :type="inputType"
           :placeholder="placeholder"
           :disabled="disabled"
           :aria-invalid="error ? true : undefined"
@@ -152,6 +175,28 @@ const frameClasses = computed(() =>
         >
           {{ error }}
         </span>
+
+        <!-- Last in the row, so it stays put when an error appears beside
+             it. A toggle button: the name is constant and `aria-pressed`
+             carries the state.
+
+             `mousedown.prevent` keeps focus, and so the caret, in the input
+             when the eye is clicked; keyboard users still reach it by Tab.
+             The negative margin widens the hit area to 32px without moving
+             the icon off the 16px padding line. -->
+        <button
+          v-if="canReveal"
+          type="button"
+          class="-mr-2 flex shrink-0 cursor-pointer rounded-md p-2 text-fg-heading/50 transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-brand disabled:cursor-not-allowed disabled:hover:text-fg-heading/50"
+          aria-label="Show password"
+          :aria-pressed="revealed"
+          :disabled="disabled"
+          @mousedown.prevent
+          @click="revealed = !revealed"
+        >
+          <Icon v-if="revealed" name="ph:eye-slash-bold" class="size-4" />
+          <Icon v-else name="ph:eye-bold" class="size-4" />
+        </button>
       </div>
 
       <!-- The mobile copy of a `side` field's message, under the box.

@@ -10,10 +10,14 @@ export interface User {
    maps its own errors onto these, so the pages never need to know which
    backend they are talking to. Anything else is thrown as-is and treated
    as "something went wrong". */
-export type BackendErrorCode = 'invalid-credentials' | 'email-taken'
+export type BackendErrorCode =
+  | 'invalid-credentials'
+  | 'email-taken'
+  /** The account exists but its confirmation link has not been opened. */
+  | 'email-not-confirmed'
 
 export class BackendError extends Error {
-  constructor(public code: BackendErrorCode, message = code) {
+  constructor(public code: BackendErrorCode, message: string = code) {
     super(message)
     this.name = 'BackendError'
   }
@@ -28,7 +32,9 @@ export interface Backend {
    *  Only a backend where such an account exists provides one. */
   testAccount?: { email: string, password: string }
 
-  signUp(email: string, password: string): Promise<User>
+  /** The new user, signed in; or null when the account still has to be
+   *  confirmed from an emailed link before it can sign in. */
+  signUp(email: string, password: string): Promise<User | null>
   signIn(email: string, password: string): Promise<User>
   signOut(): Promise<void>
   /** The signed-in user restored from the previous visit, if any. */

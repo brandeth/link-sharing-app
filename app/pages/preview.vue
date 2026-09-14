@@ -45,7 +45,7 @@ async function onShare() {
         class="flex items-center justify-between gap-4 rounded-xl sm:bg-surface sm:py-4 sm:pr-4 sm:pl-6"
         aria-label="Preview actions"
       >
-        <BaseButton to="/links" variant="secondary" class="flex-1 sm:flex-none">
+        <BaseButton to="/" variant="secondary" class="flex-1 sm:flex-none">
           Back to Editor
         </BaseButton>
         <BaseButton class="flex-1 sm:flex-none" @click="onShare">

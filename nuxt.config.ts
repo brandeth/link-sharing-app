@@ -18,6 +18,12 @@ export default defineNuxtConfig({
       // local development, `supabase` in production. Override with
       // NUXT_PUBLIC_BACKEND. See app/backend/.
       backend: 'memory',
+      // Only read by the supabase backend. The publishable key is meant
+      // for the browser; row-level security is what protects the data.
+      // Set with NUXT_PUBLIC_SUPABASE_URL and
+      // NUXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.
+      supabaseUrl: '',
+      supabasePublishableKey: '',
     },
   },
   // Pages that need the signed-in user render in the browser only. Both
@@ -27,11 +33,14 @@ export default defineNuxtConfig({
   // away. The auth pages are included so the redirect of an
   // already-signed-in user happens before anything is painted.
   routeRules: {
-    '/links': { ssr: false },
+    '/': { ssr: false },
     '/profile-details': { ssr: false },
     '/preview': { ssr: false },
     '/login': { ssr: false },
     '/signup': { ssr: false },
+    // The editor lived here before it moved to `/`; kept so old
+    // bookmarks and open tabs still land on it.
+    '/links': { redirect: '/' },
   },
   modules: ['@nuxt/eslint', '@nuxt/fonts', '@nuxt/icon'],
   icon: {

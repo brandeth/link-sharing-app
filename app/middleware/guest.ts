@@ -2,5 +2,5 @@
 export default defineNuxtRouteMiddleware(async () => {
   const { user, restore } = useSession()
   await restore()
-  if (user.value) return navigateTo('/links')
+  if (user.value) return navigateTo('/')
 })

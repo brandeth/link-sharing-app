@@ -33,7 +33,7 @@ async function onLogOut() {
              297px = 116 + 181, against desktop's 313px with its 16px gap).
              Their own 24px padding still leaves 48px between the labels. -->
         <nav class="flex items-center xl:gap-4">
-          <NavTab to="/links" icon="ph:link-bold">Links</NavTab>
+          <NavTab to="/" icon="ph:link-bold">Links</NavTab>
           <NavTab to="/profile-details" icon="ph:user-circle-bold">
             Profile Details
           </NavTab>

@@ -35,8 +35,13 @@ async function onSubmit() {
 
   submitting.value = true
   try {
-    await signUp(email.value, password.value)
-    await navigateTo('/links')
+    if (await signUp(email.value, password.value)) {
+      await navigateTo('/')
+    }
+    else {
+      await navigateTo('/login')
+      showToast('Check your email to confirm your account.', 'ph:envelope-simple-bold')
+    }
   }
   catch (error) {
     if (error instanceof BackendError && error.code === 'email-taken') {

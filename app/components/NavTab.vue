@@ -13,13 +13,14 @@ defineProps<{
   <!-- `custom` rather than NuxtLink's own `activeClass`, because the
        selected state changes the icon's colour as well as the anchor's
        fill, and the icon needs the flag rather than a class inherited
-       from an ancestor. -->
-  <NuxtLink v-slot="{ href, navigate, isActive }" :to="to" custom>
+       from an ancestor. Exact matching, because the Links tab is `/`
+       and would otherwise count as active on every page. -->
+  <NuxtLink v-slot="{ href, navigate, isExactActive }" :to="to" custom>
     <a
       :href="href ?? undefined"
-      :aria-current="isActive ? 'page' : undefined"
+      :aria-current="isExactActive ? 'page' : undefined"
       class="flex h-13 items-center gap-2 rounded-lg px-6 py-4 text-preset-3-semibold sm:h-14 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-      :class="isActive
+      :class="isExactActive
         ? 'bg-surface-selected text-brand'
         : 'text-fg-secondary hover:text-brand'"
       @click="navigate"

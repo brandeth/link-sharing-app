@@ -10,11 +10,11 @@ const saving = ref(false)
 /* Each tab saves its own form. Links needs a list to save, or unsaved
    changes to one, which is how removing every link still saves; the
    profile form can always be submitted, so an empty one gets its
-   "Can't be empty" messages. Disabled while a save is in flight, so a double click
-   cannot send it twice. */
+   "Can't be empty" messages. Disabled while a save is in flight, so a
+   double click cannot send it twice. */
 const canSave = computed(() => !saving.value && (
   route.path === '/profile-details'
-  || (route.path === '/links' && (links.value.length > 0 || linksChanged.value))
+  || (route.path === '/' && (links.value.length > 0 || linksChanged.value))
 ))
 
 async function onSave() {
@@ -22,7 +22,7 @@ async function onSave() {
   const userId = user.value!.id
   saving.value = true
   try {
-    const saved = route.path === '/links' ? await saveLinks(userId) : await saveProfile(userId)
+    const saved = route.path === '/' ? await saveLinks(userId) : await saveProfile(userId)
 
     if (!saved) {
       /* Take the user to the first broken field. Focusing its input also
@@ -56,7 +56,7 @@ async function onSave() {
          the viewport, and grows past it only when fixed content (the
          phone, the empty state) needs the room — never to fit the links
          list, which scrolls instead. The list opts out of sizing its
-         ancestors with `contain: size`; see pages/links.vue. -->
+         ancestors with `contain: size`; see pages/index.vue. -->
     <TheHeader />
 
     <!-- The gutter is 16px on mobile and 24px from `sm`. Mobile needs a

@@ -43,7 +43,7 @@ async function onSubmit() {
   submitting.value = true
   try {
     await signIn(email.value, password.value)
-    await navigateTo('/links')
+    await navigateTo('/')
   }
   catch (error) {
     /* Wrong credentials are reported on the password without saying
@@ -51,6 +51,9 @@ async function onSubmit() {
        account exists for the email. */
     if (error instanceof BackendError && error.code === 'invalid-credentials') {
       passwordError.value = 'Please check again'
+    }
+    else if (error instanceof BackendError && error.code === 'email-not-confirmed') {
+      showToast('Please confirm your email before logging in.', 'ph:envelope-simple-bold')
     }
     else {
       console.error(error)

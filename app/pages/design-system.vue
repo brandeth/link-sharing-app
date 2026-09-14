@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { BaseButton, BaseInput } from '#components'
 
-useHead({ title: 'Design System' })
+/* Reachable by URL only: nothing in the app links here. Kept out of
+   search results, since it is a style reference rather than content. */
+useHead({
+  title: 'Design System',
+  meta: [{ name: 'robots', content: 'noindex' }],
+})
 
 const buttonSpecimens = [
   { label: 'Primary', props: {}, slot: 'Save' },
